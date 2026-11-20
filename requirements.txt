@@ -1,0 +1,9 @@
+--extra-index-url https://download.pytorch.org/whl/cu128
+
+av==18.1.0
+numpy==2.2.6
+pyarrow==26.0.1
+torch==2.8.0
+torchvision==0.23.0
+ultralytics==8.4.216
+
