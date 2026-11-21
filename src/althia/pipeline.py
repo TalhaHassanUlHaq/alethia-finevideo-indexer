@@ -10,7 +10,8 @@ import numpy as np
 import pyarrow.parquet as pq
 
 from .aggregation import VideoAggregation
-from .video import DecodedFrame, decode_video
+from .config import PipelineConfig
+from .video import DecodedFrame, decode_video, get_decoder_for_config
 
 
 class Detector(Protocol):
@@ -82,7 +83,22 @@ def run_pipeline(
     output_path: Path,
     detector: Detector,
     batch_size: int = 1,
+    decoder: Callable[[bytes], Iterable[DecodedFrame]] | None = None,
+    config: PipelineConfig | None = None,
 ) -> dict[str, float | int]:
+    if config is not None:
+        effective_batch_size = config.batch_size
+        effective_decoder = (
+            get_decoder_for_config(config) if decoder is None else decoder
+        )
+        custom_decoder = decoder is not None or config.decoder_strategy != "D0"
+    else:
+        if batch_size < 1:
+            raise ValueError("batch_size must be at least 1")
+        effective_batch_size = batch_size
+        effective_decoder = decode_video if decoder is None else decoder
+        custom_decoder = decoder is not None
+
     parquet_files = sorted(input_dir.glob("*.parquet"))
     if not parquet_files:
         raise FileNotFoundError(f"no .parquet files found in {input_dir}")
@@ -97,12 +113,21 @@ def run_pipeline(
             try:
                 for row_number, payload in iter_parquet_videos(parquet_path):
                     video_id = f"{parquet_path.name}:{row_number}"
-                    records, error = process_video(
-                        video_id=video_id,
-                        video_bytes=payload,
-                        detector=detector,
-                        batch_size=batch_size,
-                    )
+                    if custom_decoder:
+                        records, error = process_video(
+                            video_id=video_id,
+                            video_bytes=payload,
+                            detector=detector,
+                            batch_size=effective_batch_size,
+                            decoder=effective_decoder,
+                        )
+                    else:
+                        records, error = process_video(
+                            video_id=video_id,
+                            video_bytes=payload,
+                            detector=detector,
+                            batch_size=effective_batch_size,
+                        )
                     for record in records:
                         write_json_line(output, record)
                     if error is not None:
@@ -131,4 +156,3 @@ def run_pipeline(
         "seconds": seconds,
         "elapsed_seconds": time.perf_counter() - started,
     }
-

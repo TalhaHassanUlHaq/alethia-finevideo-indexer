@@ -1,4 +1,5 @@
 TARGET_OBJECTS = ("person", "car", "dog", "laptop", "cell phone")
+TARGET_CLASSES = TARGET_OBJECTS
 
 TARGET_CLASS_IDS = {
     0: "person",

@@ -1,0 +1,10 @@
+# AI conversation exports / share links
+
+# Before public submission, add the complete user-exported conversation links
+# or native export filenames below. Do not add credentials.
+
+Codex / ChatGPT:
+PENDING: add the complete exported conversation or share link.
+
+Gemini / Antigravity:
+PENDING: add the complete exported conversation or share link.

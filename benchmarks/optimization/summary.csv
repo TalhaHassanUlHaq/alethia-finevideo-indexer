@@ -1,0 +1,4 @@
+config_id,decoder,precision,batch_size,reps_completed,median_runtime_sec,runtime_std_sec,runtime_cov,median_fps,speedup_vs_baseline,exact_match,object_micro_f1,people_exact_pct,people_within_one_pct,peak_device_used_mib
+cfg_01_D0_fp32_b1,D0,fp32,1,3,172.92,2.143,0.0124,43.22,1.0,True,1.0,100.0,100.0,887.2
+cfg_26_D2_fp32_b2,D2,fp32,2,3,162.49,0.834,0.0051,45.99,1.064,True,1.0,100.0,100.0,991.2
+cfg_33_D2_fp16_b4,D2,fp16,4,3,98.47,2.087,0.0212,75.89,1.756,False,1.0,99.68,100.0,1019.2

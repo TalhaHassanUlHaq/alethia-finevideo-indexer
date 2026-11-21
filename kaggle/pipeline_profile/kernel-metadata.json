@@ -1,0 +1,19 @@
+{
+  "id": "talhahassanulhaq/althia-pipeline-profile",
+  "title": "Althia Pipeline Profile",
+  "code_file": "profile.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "talhahassanulhaq/althia-reference-suite"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [
+    "talhahassanulhaq/althia-phase-3-reference"
+  ],
+  "model_sources": []
+}

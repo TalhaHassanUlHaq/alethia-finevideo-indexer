@@ -11,7 +11,12 @@ from .constants import TARGET_CLASS_IDS
 
 
 class UltralyticsDetector:
-    def __init__(self, model_path: Path, device: str = "auto") -> None:
+    def __init__(
+        self,
+        model_path: Path,
+        device: str = "auto",
+        precision: str = "fp32",
+    ) -> None:
         if not model_path.is_file():
             raise FileNotFoundError(
                 f"model weights not found: {model_path}; run python prepare.py first"
@@ -19,6 +24,12 @@ class UltralyticsDetector:
         self.device = "0" if device == "auto" and torch.cuda.is_available() else device
         if self.device == "auto":
             self.device = "cpu"
+        if precision not in ("fp32", "fp16"):
+            raise ValueError(f"invalid precision: {precision!r}")
+        if precision == "fp16" and self.device == "cpu":
+            raise RuntimeError("FP16 inference requires a CUDA device, but device is cpu")
+        self.precision = precision
+        self.half = precision == "fp16"
         self.model = YOLO(str(model_path))
         mismatches = {
             class_id: (expected, self.model.names.get(class_id))
@@ -38,6 +49,7 @@ class UltralyticsDetector:
             conf=0.4,
             iou=0.7,
             device=self.device,
+            half=self.half,
             verbose=False,
         )
         detections: list[list[int]] = []
@@ -53,4 +65,3 @@ class UltralyticsDetector:
                 f"model returned {len(detections)} results for {len(images)} frames"
             )
         return detections
-

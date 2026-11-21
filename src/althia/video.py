@@ -1,11 +1,16 @@
 from __future__ import annotations
 
 import io
+import queue
+import threading
+import time
 from dataclasses import dataclass
 from fractions import Fraction
-from typing import Iterator
+from typing import Callable, Iterable, Iterator
 
 import numpy as np
+
+from .config import PipelineConfig
 
 
 @dataclass(frozen=True)
@@ -42,7 +47,11 @@ def rotate_bgr(image: np.ndarray, rotation: float | int | None) -> np.ndarray:
     return np.ascontiguousarray(image)
 
 
-def decode_video(video_bytes: bytes) -> Iterator[DecodedFrame]:
+def decode_video(
+    video_bytes: bytes,
+    thread_type: str | None = None,
+    thread_count: int | None = None,
+) -> Iterator[DecodedFrame]:
     import av
 
     if not video_bytes:
@@ -51,6 +60,9 @@ def decode_video(video_bytes: bytes) -> Iterator[DecodedFrame]:
         if not container.streams.video:
             raise ValueError("container has no video stream")
         stream = container.streams.video[0]
+        if thread_type is not None and thread_count is not None and thread_count > 0:
+            stream.codec_context.thread_type = thread_type
+            stream.codec_context.thread_count = thread_count
         fallback_rate = stream.average_rate or stream.guessed_rate or stream.base_rate
         for frame_index, frame in enumerate(container.decode(stream)):
             timestamp = frame_timestamp(frame, frame_index, fallback_rate)
@@ -60,3 +72,87 @@ def decode_video(video_bytes: bytes) -> Iterator[DecodedFrame]:
                 timestamp=timestamp,
             )
 
+
+def decode_video_prefetched(
+    video_bytes: bytes,
+    thread_type: str | None = None,
+    thread_count: int | None = None,
+    capacity: int = 64,
+) -> Iterator[DecodedFrame]:
+    sentinel = object()
+    q: queue.Queue[object] = queue.Queue(maxsize=capacity)
+    exc_box: list[BaseException] = []
+    stop_event = threading.Event()
+
+    def producer() -> None:
+        try:
+            for frame in decode_video(
+                video_bytes, thread_type=thread_type, thread_count=thread_count
+            ):
+                if stop_event.is_set():
+                    break
+                while not stop_event.is_set():
+                    try:
+                        q.put(frame, timeout=0.05)
+                        break
+                    except queue.Full:
+                        continue
+        except BaseException as exc:
+            exc_box.append(exc)
+        finally:
+            while True:
+                try:
+                    q.put(sentinel, timeout=0.05)
+                    break
+                except queue.Full:
+                    if stop_event.is_set():
+                        break
+
+    t = threading.Thread(target=producer, daemon=True)
+    t.start()
+
+    try:
+        while True:
+            item = q.get()
+            if item is sentinel:
+                break
+            yield item  # type: ignore[misc]
+        if exc_box:
+            raise exc_box[0]
+    finally:
+        stop_event.set()
+        while t.is_alive():
+            try:
+                drain = q.get_nowait()
+                if drain is sentinel:
+                    break
+            except queue.Empty:
+                time.sleep(0.005)
+        t.join(timeout=2.0)
+
+
+def get_decoder_for_config(
+    config: PipelineConfig,
+) -> Callable[[bytes], Iterable[DecodedFrame]]:
+    if config.decoder_strategy == "D0":
+        return decode_video
+    elif config.decoder_strategy == "D1":
+        return lambda vb: decode_video(
+            vb,
+            thread_type=config.decode_thread_type,
+            thread_count=config.decode_threads,
+        )
+    elif config.decoder_strategy == "D2":
+        return lambda vb: decode_video_prefetched(
+            vb,
+            capacity=config.prefetch_capacity,
+        )
+    elif config.decoder_strategy == "D3":
+        return lambda vb: decode_video_prefetched(
+            vb,
+            thread_type=config.decode_thread_type,
+            thread_count=config.decode_threads,
+            capacity=config.prefetch_capacity,
+        )
+    else:
+        raise ValueError(f"unknown decoder strategy: {config.decoder_strategy}")

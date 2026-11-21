@@ -30,9 +30,11 @@ implementation task with acceptance criteria.
 
 ## Active implementation task
 
-None. Phase 3 passed Codex review and the stable reference files were promoted
-to `reference/expected.jsonl` and `reference/metadata.json`. Wait for Codex to
-define the next bounded implementation task. Do not begin optimization.
+Implement and execute `ai_chats/GEMINI_TASK_PHASE5_NO_RUN_RELEASE_PREP.md` in
+its entirety. This is a no-inference release-preparation task: correct only
+the code/reporting defects, strengthen validation, and prepare the repository
+for the user's friend to run on a GPU. Do not launch any model, Kaggle, or
+benchmark work. Preserve all prior raw measurements and reference/benchmark
+artifacts.
 
-Do not modify `WRITEUP.md`. Do not start optimization work. Do not access or
-print `.env`.
+Do not modify `WRITEUP.md`, do not commit, and do not access or print `.env`.

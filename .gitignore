@@ -10,6 +10,7 @@ finevideo/
 artifacts/
 results*.jsonl
 results*.jsonl.gz
+!/results.jsonl.gz
 .idea/
 .vscode/
 
