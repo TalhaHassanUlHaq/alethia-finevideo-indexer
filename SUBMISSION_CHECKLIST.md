@@ -28,7 +28,7 @@ Complete every pending item only with evidence from the real full 50-shard run.
 ## Full-run command
 
 ```bash
-python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 16
+python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8
 ```
 
 ## After the full run

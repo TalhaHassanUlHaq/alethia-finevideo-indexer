@@ -167,7 +167,7 @@ claims; current benchmark facts are in `benchmarks/optimization/`.
 The selected future production command, requested by the user, is:
 
 ```text
-python run.py --input <folder> --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 16
+python run.py --input <folder> --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8
 ```
 
 No full dataset or local GPU is available in this workspace, and the user has

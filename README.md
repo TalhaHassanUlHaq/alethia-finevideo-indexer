@@ -36,7 +36,7 @@ earlier results.
 For the full 50-shard production run on a GPU host, use:
 
 ```bash
-python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 16
+python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8
 ```
 
 See [RUN_ON_FRIEND.md](RUN_ON_FRIEND.md) for the complete host handoff,

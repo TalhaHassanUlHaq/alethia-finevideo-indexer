@@ -19,7 +19,7 @@
 
 - Input: first 50 FineVideo Parquet shards
 - Command:
-  `python run.py --input <folder> --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 16`
+  `python run.py --input <folder> --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8`
 - Start time (UTC):
 - End time (UTC):
 - Total wall-clock duration:

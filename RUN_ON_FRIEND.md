@@ -60,10 +60,14 @@ ls -1 /path/to/finevideo/data/*.parquet | wc -l
 
 ## 4. Production Run Execution
 
-Run the optimized production command below. This command uses bounded prefetch decoding (`--decoder-strategy D2`), Tensor Core accelerated half-precision (`--precision fp16`), and batch size 16 (`--batch-size 16`):
+Run the selected production command below. This command uses bounded prefetch
+decoding (`--decoder-strategy D2`), Tensor Core accelerated half-precision
+(`--precision fp16`), and batch size 8 (`--batch-size 8`). Batch 8 was the
+faster measured FP16 D2 setting on the T4 reference fixture and is the safer
+initial choice for an 8 GB RTX 4060 Laptop GPU.
 
 ```bash
-python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 16
+python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8
 ```
 
 ### Recommended Wrapper (Capturing Timings and Logs)
@@ -75,7 +79,7 @@ To accurately capture start/end timestamps and complete terminal output for post
 date -u +"%Y-%m-%d %H:%M:%S UTC" > run_start.txt
 
 # Execute pipeline with logging to console and file
-python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 16 2>&1 | tee run.log
+python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8 2>&1 | tee run.log
 
 # Record exact completion timestamp
 date -u +"%Y-%m-%d %H:%M:%S UTC" > run_end.txt
