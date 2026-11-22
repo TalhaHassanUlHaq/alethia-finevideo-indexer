@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "althia-video-indexer"
+name = "alethia-video-indexer"
 version = "0.1.0"
 description = "FineVideo indexing pipeline using YOLO11l"
 requires-python = ">=3.11"

@@ -5,7 +5,7 @@ from pathlib import Path
 
 from ultralytics import YOLO
 
-from src.althia.constants import TARGET_CLASS_IDS
+from src.alethia.constants import TARGET_CLASS_IDS
 
 
 def parse_args() -> argparse.Namespace:

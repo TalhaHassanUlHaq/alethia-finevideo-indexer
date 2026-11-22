@@ -1,4 +1,4 @@
-from src.althia.cli import main
+from src.alethia.cli import main
 
 
 if __name__ == "__main__":

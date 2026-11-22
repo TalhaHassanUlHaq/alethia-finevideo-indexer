@@ -1,4 +1,4 @@
-# Althia Video Indexer
+# Alethia Video Indexer
 
 FineVideo indexing pipeline using YOLO11l. The required compatibility command
 is retained, while the selected production configuration is documented for the
