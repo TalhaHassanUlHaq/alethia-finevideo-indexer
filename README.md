@@ -23,25 +23,25 @@ is available. The timed indexing command does not require internet access.
 
 ## Run
 
-Required compatibility command:
+Required evaluation command:
 
 ```bash
 python run.py --input /path/to/finevideo/data --output results.jsonl
 ```
 
-The baseline decodes and evaluates every frame in FP32, one frame at a time.
-It writes output after each video so a later damaged video does not discard
-earlier results.
+By default, the CLI uses the validated production configuration: bounded D2
+prefetching (`prefetch_capacity=64`), FP16 inference, and batch size 8. This
+matches the configuration used to produce the final 50-shard results. Output is
+written after each video so a later damaged video does not discard earlier results.
 
-For the full 50-shard production run on a GPU host, use:
+To run the original correctness-first baseline explicitly:
 
 ```bash
-python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D2 --precision fp16 --batch-size 8
+python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-strategy D0 --precision fp32 --batch-size 1
 ```
 
-See [RUN_ON_FRIEND.md](RUN_ON_FRIEND.md) for the complete host handoff,
-validation, compression, and hardware-recording steps. See
-[SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) before public submission.
+The explicit baseline decodes and evaluates every frame in FP32, one frame at a time.
+See [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) before public submission.
 
 ## Validate
 
@@ -52,8 +52,11 @@ pytest -q
 
 ## Submission artifacts
 
-The assignment requires root-level `results.jsonl.gz`, `HARDWARE.md`,
-`WRITEUP.md`, and complete `ai_chats/` records. The compressed full-run output
-and measured hardware report are pending the real GPU-host run. The candidate
-must write `WRITEUP.md` independently, without AI assistance.
+The root-level `results.jsonl.gz` contains the merged output from all first 50
+FineVideo shards: 461,757 records for 1,650 videos with zero error records. Its
+SHA-256 is
+`1622595ab54be0e4029e348891ed718a7f673036e4292bb31e2bfcc1a2a53468`.
+The measured distributed Kaggle environment and run duration are recorded in
+`HARDWARE.md`. The candidate is solely responsible for `WRITEUP.md` and for
+adding the complete Codex and Gemini share links or exports under `ai_chats/`.
 

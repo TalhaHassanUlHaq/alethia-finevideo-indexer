@@ -16,12 +16,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--model", type=Path, default=Path("yolo11l.pt"))
     parser.add_argument("--device", default="auto")
-    parser.add_argument("--batch-size", type=int, default=1)
+    parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument(
         "--decoder-strategy",
         choices=["D0", "D1", "D2", "D3"],
-        default="D0",
-        help="Video decoding strategy (default: D0)",
+        default="D2",
+        help="Video decoding strategy (default: D2)",
     )
     parser.add_argument(
         "--decode-thread-type",
@@ -44,8 +44,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--precision",
         choices=["fp32", "fp16"],
-        default="fp32",
-        help="Model inference precision (default: fp32)",
+        default="fp16",
+        help="Model inference precision (default: fp16)",
     )
     return parser.parse_args()
 

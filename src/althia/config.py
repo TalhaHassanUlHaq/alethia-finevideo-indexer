@@ -10,12 +10,12 @@ Precision = Literal["fp32", "fp16"]
 
 @dataclass(frozen=True)
 class PipelineConfig:
-    decoder_strategy: DecoderStrategy = "D0"
+    decoder_strategy: DecoderStrategy = "D2"
     decode_thread_type: DecodeThreadType = "AUTO"
     decode_threads: int = 2
     prefetch_capacity: int = 64
-    precision: Precision = "fp32"
-    batch_size: int = 1
+    precision: Precision = "fp16"
+    batch_size: int = 8
 
     def __post_init__(self) -> None:
         if self.decoder_strategy not in ("D0", "D1", "D2", "D3"):

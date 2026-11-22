@@ -30,11 +30,7 @@ implementation task with acceptance criteria.
 
 ## Active implementation task
 
-Implement and execute `ai_chats/GEMINI_TASK_PHASE5_NO_RUN_RELEASE_PREP.md` in
-its entirety. This is a no-inference release-preparation task: correct only
-the code/reporting defects, strengthen validation, and prepare the repository
-for the user's friend to run on a GPU. Do not launch any model, Kaggle, or
-benchmark work. Preserve all prior raw measurements and reference/benchmark
-artifacts.
-
-Do not modify `WRITEUP.md`, do not commit, and do not access or print `.env`.
+No implementation task is active. The final submission-defaults task in
+`ai_chats/GEMINI_TASK_FINAL_SUBMISSION_DEFAULTS.md` was completed by Gemini and
+independently verified by Codex. Do not make further changes unless Codex adds
+a new bounded task here.

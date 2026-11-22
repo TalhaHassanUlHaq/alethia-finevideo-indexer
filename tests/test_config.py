@@ -5,10 +5,21 @@ from src.althia.config import PipelineConfig
 
 def test_pipeline_config_defaults() -> None:
     config = PipelineConfig()
-    assert config.decoder_strategy == "D0"
+    assert config.decoder_strategy == "D2"
     assert config.decode_thread_type == "AUTO"
     assert config.decode_threads == 2
     assert config.prefetch_capacity == 64
+    assert config.precision == "fp16"
+    assert config.batch_size == 8
+
+
+def test_pipeline_config_explicit_baseline() -> None:
+    config = PipelineConfig(
+        decoder_strategy="D0",
+        precision="fp32",
+        batch_size=1,
+    )
+    assert config.decoder_strategy == "D0"
     assert config.precision == "fp32"
     assert config.batch_size == 1
 

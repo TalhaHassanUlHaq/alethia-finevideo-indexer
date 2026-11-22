@@ -105,7 +105,7 @@ def test_pipeline_video_ids_fault_tolerance_and_validation(
         validate_jsonl(output_path, expected_videos=3, allow_errors=False)
 
 
-def test_default_cli_batch_size_is_one(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_default_cli_options_use_optimized_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     from src.althia.cli import parse_args
 
     monkeypatch.setattr(
@@ -113,7 +113,35 @@ def test_default_cli_batch_size_is_one(monkeypatch: pytest.MonkeyPatch) -> None:
         ["run.py", "--input", "inputs", "--output", "results.jsonl"],
     )
     args = parse_args()
+    assert args.batch_size == 8
+    assert args.decoder_strategy == "D2"
+    assert args.precision == "fp16"
+    assert args.prefetch_capacity == 64
+
+
+def test_cli_explicit_baseline_flags(monkeypatch: pytest.MonkeyPatch) -> None:
+    from src.althia.cli import parse_args
+
+    monkeypatch.setattr(
+        "sys.argv",
+        [
+            "run.py",
+            "--input",
+            "inputs",
+            "--output",
+            "results.jsonl",
+            "--decoder-strategy",
+            "D0",
+            "--precision",
+            "fp32",
+            "--batch-size",
+            "1",
+        ],
+    )
+    args = parse_args()
     assert args.batch_size == 1
+    assert args.decoder_strategy == "D0"
+    assert args.precision == "fp32"
 
 
 def test_batch_size_validation_rejects_below_one(tmp_path: Path) -> None:
