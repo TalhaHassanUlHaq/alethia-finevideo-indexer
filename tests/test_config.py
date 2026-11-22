@@ -10,7 +10,7 @@ def test_pipeline_config_defaults() -> None:
     assert config.decode_threads == 2
     assert config.prefetch_capacity == 64
     assert config.precision == "fp16"
-    assert config.batch_size == 8
+    assert config.batch_size == 16
 
 
 def test_pipeline_config_explicit_baseline() -> None:

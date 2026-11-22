@@ -16,7 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--model", type=Path, default=Path("yolo11l.pt"))
     parser.add_argument("--device", default="auto")
-    parser.add_argument("--batch-size", type=int, default=8)
+    parser.add_argument("--batch-size", type=int, default=16)
     parser.add_argument(
         "--decoder-strategy",
         choices=["D0", "D1", "D2", "D3"],

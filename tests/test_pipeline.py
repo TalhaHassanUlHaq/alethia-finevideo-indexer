@@ -113,7 +113,7 @@ def test_default_cli_options_use_optimized_defaults(monkeypatch: pytest.MonkeyPa
         ["run.py", "--input", "inputs", "--output", "results.jsonl"],
     )
     args = parse_args()
-    assert args.batch_size == 8
+    assert args.batch_size == 16
     assert args.decoder_strategy == "D2"
     assert args.precision == "fp16"
     assert args.prefetch_capacity == 64

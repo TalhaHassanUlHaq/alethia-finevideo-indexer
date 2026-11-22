@@ -29,10 +29,11 @@ Required evaluation command:
 python run.py --input /path/to/finevideo/data --output results.jsonl
 ```
 
-By default, the CLI uses the validated production configuration: bounded D2
-prefetching (`prefetch_capacity=64`), FP16 inference, and batch size 8. This
-matches the configuration used to produce the final 50-shard results. Output is
-written after each video so a later damaged video does not discard earlier results.
+By default, the CLI uses the target evaluation configuration: bounded D2
+prefetching (`prefetch_capacity=64`), FP16 inference, and batch size 16. The
+historical 50-shard artifact used batch size 8, as recorded in `HARDWARE.md`.
+Output is written after each video so a later damaged video does not discard
+earlier results.
 
 To run the original correctness-first baseline explicitly:
 
