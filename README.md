@@ -14,7 +14,7 @@ wheel bundles FFmpeg.
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements.txt .
 python prepare.py
 ```
 
@@ -45,9 +45,18 @@ See [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) before public submission.
 
 ## Validate
 
+Validate a generated output file using the runtime environment:
+
 ```bash
 python scripts/validate_jsonl.py results.jsonl
-pytest -q
+```
+
+To run the optional development test suite, install its separately pinned
+dependencies first:
+
+```bash
+pip install -r requirements-dev.txt
+python -m pytest -q
 ```
 
 ## Submission artifacts

@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Sequence
 
 import numpy as np
 import torch
+
+os.environ.setdefault("YOLO_OFFLINE", "true")
+os.environ.setdefault("YOLO_AUTOINSTALL", "false")
+
 from ultralytics import YOLO
 
 from .constants import TARGET_CLASS_IDS
