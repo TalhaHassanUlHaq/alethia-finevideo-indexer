@@ -2,7 +2,8 @@
 
 # Complete conversation share links or native export filenames are listed
 # below. Credentials must not be included.
-
+ChatGPT:
+    browser session: https://chatgpt.com/g/g-p-6affe58084f48191958edc4bf60e5c1b-alethia/project
 Codex / ChatGPT:
 - Native session transcript: `ai_chats/codex-chat-transcript.md`
 - Session ID: `01a1f79a-d562-7e00-9f93-af6a75114e30`
