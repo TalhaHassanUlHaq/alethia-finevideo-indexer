@@ -42,7 +42,6 @@ python run.py --input /path/to/finevideo/data --output results.jsonl --decoder-s
 ```
 
 The explicit baseline decodes and evaluates every frame in FP32, one frame at a time.
-See [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) before public submission.
 
 ## Validate
 
@@ -50,14 +49,6 @@ Validate a generated output file using the runtime environment:
 
 ```bash
 python scripts/validate_jsonl.py results.jsonl
-```
-
-To run the optional development test suite, install its separately pinned
-dependencies first:
-
-```bash
-pip install -r requirements-dev.txt
-python -m pytest -q
 ```
 
 ## Submission artifacts
