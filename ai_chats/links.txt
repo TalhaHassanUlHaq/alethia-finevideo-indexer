@@ -1,10 +1,12 @@
 # AI conversation exports / share links
 
-# Before public submission, add the complete user-exported conversation links
-# or native export filenames below. Do not add credentials.
+# Complete conversation share links or native export filenames are listed
+# below. Credentials must not be included.
 
 Codex / ChatGPT:
-PENDING: add the complete exported conversation or share link.
+- Native session transcript: `ai_chats/codex-chat-transcript.md`
+- Session ID: `01a1f79a-d562-7e00-9f93-af6a75114e30`
 
 Gemini / Antigravity:
-PENDING: add the complete exported conversation or share link.
+- Native session transcript: `ai_chats/gemini_antigravity_transcript.jsonl`
+- Conversation ID: `b7787406-cc5d-4269-8825-db866a07f085`
